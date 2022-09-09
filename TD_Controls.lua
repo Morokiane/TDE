@@ -9,8 +9,8 @@ t=0
 p={
 	idx=256,
 	facing="down",
-	x=0,
-	y=0,
+	x=32,
+	y=32,
 	idle=true,
 	flp=false,
 	canMove=true,
@@ -50,25 +50,45 @@ end
 
 Init()
 
+col={
+	ty=0,
+	by=16,--default 16
+	lx=0,
+	rx=16 --default 16
+}
+
+function OVR()
+	--top
+	pix(p.x+col.lx,p.y-1+col.ty,2) pix(p.x+col.rx-1,p.y-1+col.ty,2)
+	--bot
+	pix(p.x+col.lx,p.y+col.by,4) pix(p.x+col.rx-1,p.y+col.by,4)
+	--left
+	pix(p.x-1+col.lx,p.y+col.ty,5) pix(p.x-1+col.lx,p.y+col.by-1,5)
+	--right
+	pix(p.x+col.rx,p.y+col.ty,11) pix(p.x+col.rx,p.y+col.by-1,10)
+	--pix(p.x+16,p.y+col.ty,11) pix(p.x+16,p.y+15,10)
+
+end
+
 function Controls()
 
 	if p.canMove==true then
-		if btn(c.up) and not solid(p.x,p.y-1) and not solid(p.x+15,p.y-1) then
+		if btn(c.up) and not solid(p.x+col.lx,p.y-1+col.ty) and not solid(p.x+col.rx-1,p.y-1+col.ty) then
 			c_up()
 			p.facing="up"
 		end
 		
-		if btn(c.down) and not solid(p.x,p.y+16) and not solid(p.x+15,p.y+16) then
+		if btn(c.down) and not solid(p.x+col.lx,p.y+col.by) and not solid(p.x+col.rx-1,p.y+col.by) then
 			c_down()
 			p.facing="down"
 		end
 		
-		if btn(c.left) and not solid(p.x-1,p.y) and not solid(p.x-1,p.y+15) then 
+		if btn(c.left) and not solid(p.x-1+col.lx,p.y+col.ty) and not solid(p.x-1+col.lx,p.y+col.by-1) then 
 			c_left()
 			p.facing="left"
 		end
 			
-		if btn(c.right) and not solid(p.x+16,p.y) and not solid(p.x+16,p.y+15) then
+		if btn(c.right) and not solid(p.x+col.rx,p.y+col.ty) and not solid(p.x+col.rx,p.y+col.by-1) then
 			c_right()
 			p.facing="right"
 		end
@@ -127,22 +147,22 @@ end
 -- </TILES>
 
 -- <SPRITES>
--- 000:cccccc11ccccccc1cccccccccccccccccccccccccccccccc1ccccccc11cccccc
--- 001:11cccccc1cccccccccccccccccccccccccccccccccccccccccccccc1cccccc11
--- 004:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 005:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 008:cccccc11ccccccc1cccccccccccccccccccccccccccccccccccccccccccccccc
--- 009:11cccccc1ccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 012:cccccccccccccccccccccccccccccccccccccccccccccccc1ccccccc11cccccc
--- 013:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 016:11cccccc1cccccccccccccccccccccccccccccccccccccccccccccc1cccccc11
--- 017:cccccc11ccccccc1cccccccccccccccccccccccccccccccc1ccccccc11cccccc
--- 020:ccccccccccccccccccccccccccccccccccccccccccccccccccccccc1cccccc11
--- 021:cccccccccccccccccccccccccccccccccccccccccccccccc1ccccccc11cccccc
--- 024:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 025:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 028:11cccccc1ccccccccccccccccccccccccccccccccccccccccccccccccccccccc
--- 029:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+-- 000:cccccc11ccccccc1ccccccccccccccccccccddddccccdccc1cccdccc11ccdccc
+-- 001:11cccccc1cccccccccccccccccccccccddddcccccccdcccccccdccc1cccdcc11
+-- 004:ccccccccccccccccccccccccccccccccccccddddccccdcccccccdcccccccdccc
+-- 005:ccccccccccccccccccccccccccccccccddddcccccccdcccccccdcccccccdcccc
+-- 008:cccccc11ccccccc1ccccccccccccccccccccddddccccdcccccccdcccccccdccc
+-- 009:11cccccc1cccccccccccccccccccccccddddcccccccdcccccccdcccccccdcccc
+-- 012:ccccccccccccccccccccccccccccccccccccddddccccdccc1cccdccc11ccdccc
+-- 013:ccccccccccccccccccccccccccccccccddddcccccccdcccccccdcccccccdcccc
+-- 016:11ccdccc1cccdcccccccdcccccccddddccccccccccccccccccccccc1cccccc11
+-- 017:cccdcc11cccdccc1cccdccccddddcccccccccccccccccccc1ccccccc11cccccc
+-- 020:ccccdcccccccdcccccccdcccccccddddccccccccccccccccccccccc1cccccc11
+-- 021:cccdcccccccdcccccccdccccddddcccccccccccccccccccc1ccccccc11cccccc
+-- 024:ccccdcccccccdcccccccdcccccccddddcccccccccccccccccccccccccccccccc
+-- 025:cccdcccccccdcccccccdccccddddcccccccccccccccccccccccccccccccccccc
+-- 028:11ccdccc1cccdcccccccdcccccccddddcccccccccccccccccccccccccccccccc
+-- 029:cccdcccccccdcccccccdccccddddcccccccccccccccccccccccccccccccccccc
 -- </SPRITES>
 
 -- <MAP>
